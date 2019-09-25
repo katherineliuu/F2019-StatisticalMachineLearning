@@ -1,0 +1,214 @@
+\documentclass{article}
+
+
+\usepackage{arxiv}
+\documentclass[preview,border=12pt,varwidth]{standalone}
+\usepackage{tikz}
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{lipsum}
+
+\title{A template for the \emph{arxiv} style}
+
+
+\author{
+  Joe Sato\thanks{Use footnote for providing further
+    information about author (webpage, alternative
+    address)---\emph{not} for acknowledging funding agencies.} \\
+  Department of Mathematics\\
+  Lawrence University\\
+  Appleton, WI 54911 \\
+  \texttt{} \\
+  %% examples of more authors
+   \And
+ Katherine Liu \\
+  Department of Mathematics \\
+  Lawrence University\\
+  Appleton, WI 54911 \\
+  \texttt{liuy@lawrence.edu} \\
+  %% \AND
+  %% Coauthor \\
+  %% Affiliation \\
+  %% Address \\
+  %% \texttt{email} \\
+  %% \And
+  %% Coauthor \\
+  %% Affiliation \\
+  %% Address \\
+  %% \texttt{email} \\
+  %% \And
+  %% Coauthor \\
+  %% Affiliation \\
+  %% Address \\
+  %% \texttt{email} \\
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+
+% keywords can be removed
+\keywords{Random Forests \and Quantile Regression Forests \and Out-of-Bag}
+
+
+\section{Introduction}
+
+
+\section{Methods for Prediction Intervals}
+\label{sec:headings}
+In this section, we introduce the algorithms of previously proposed methods for constructing random forests prediction intervals.  
+
+\textbf{Some Notation} I will introduce some notations to help understand the algorithms mentioned in the following sections. 
+See Section \ref{sec:headings}.
+
+\subsection{Quantile Regression Forests (QRF) Intervals (Meinshausen 2006)}
+The random forests methodology aims to come up with an estimate of the conditional mean $E(Y|X = x)$ for the response variable $Y$ given the explanatory variable $X = x$ such that the mean squared error is minimized. The Quantile Regression Forests (QRF) method goes beyond the conditional mean and learns from the conditional distribution of the observations, which illustrates alternative useful aspects of a random forest. 
+
+For each node in each tree, random forests keep only the average of observations in this node. On the other hand, quantile regression forests (QRF) preserve the the values of all observations in this node that permits us to draw useful inferences. 
+
+
+
+The conditional distribution is then estimated by the weighted distribution of observed response variables, where the weights attached to observations are identical to the original random forests algorithm.
+
+\begin{equation}
+
+\end{equation}
+
+\subsection{Out-of-Bag (OOB) Prediction Intervals (Zhang et al. 2019)}
+This method establishes prediction intervals on the basis of the distribution of the Out-of-Bag prediction errors. The underlying assumption is that we can use the empirical distribution of OOB prediction errors $\{D_{i} \equiv Y_{i}-\hat{Y}_{(i)}\}_{i=1}^n$ to approximate the distribution of the random forest prediction error $D \equiv Y-\hat{Y}$.  This assumption is shown to be reasonable since as n, the number of training observations, and B, the number of trees grow larger, the difference between the distribution of the OOB prediction errors and distribution of random forest prediction errors becomes negligible. \\
+
+In contrast to the foregoing Quantile Regression Forests (QRF) method
+,
+based on by-product in the process of constructing a single forest. Fortunately, the empirical distribution of OOB prediction errors can be obtained with no additional resampling beyond the resampling used to construct a single random forest.
+
+\textbf{Some Notation} I will introduce some notations to help understand the algorithms mentioned in the following sections. Following Breiman (2001), call $\hat{Y}_{(i)}$ an out-of-bag (OOB) prediction; call $w_{(i)}$ as OOB weights.
+
+\begin{equation}
+
+1-\alpha \approx \mathbb{P}[D_{[n, \alpha/2]} \leqslant D  \leqslant D_{[n, 1- \alpha/2]} ]=  \mathbb{P}[\hat{Y}+D_{[n, \alpha/2]} \leqslant Y  \leqslant \hat{Y}+D_{[n, 1- \alpha/2]} ], 
+
+\end{equation}
+
+where $D_{[n, \alpha]}$ is the $\alpha$ quantile of the empirical distribution of $D_{(i)}$.\\
+$1-\alpha \approx P[D_{n, \alpha/2} \leqslant D  \leqslant D_{n, 1- \alpha/2} ]=  P[\hat{Y}+D_{n, \alpha/2} \leqslant Y  \leqslant \hat{Y}+D_{n, 1- \alpha/2} ]$
+
+
+
+\subsubsection{Non-Symmetric}
+
+A $1 - \alpha$ prediction interval for $Y$ is given by $[\hat{Y}+D_{[n, \alpha/2]},  \hat{Y}+D_{[n, 1- \alpha/2]} ]$.
+
+\subsubsection{Symmetric}
+A $1 - \alpha$ prediction interval for $Y$ is given by $\hat{Y} \pm |D|_{[n, 1-\alpha]}$, where $|D|_{[n, 1-\alpha]}$ is the empirical distribution of absolute values of $D_{(i)}$, i.e. $|D_{(i)}|$.
+
+
+
+$[\hat{Y}-D_{[n, \alpha]},  \hat{Y}+D_{[n, \alpha]} ]$.
+
+\paragraph{Paragraph}
+
+\section{Asuumptions}
+\begin{table}
+ \caption{Assumptions}
+  \centering
+  \begin{tabular}{lll11}
+    \toprule
+    
+    Assumptions & RF-QRF & RF-OOB & symm RF-OOB & LR \\
+    \midrule
+    Linearity &   &  & & \checkmark    \\
+    Constant Variance     & \checkmark & \checkmark & \checkmark      \\
+    Normality     &        &   \\
+    Symmetry & & && \\
+    Independence &&&&\\
+    
+    
+    \bottomrule
+  \end{tabular}
+  \label{tab:table}
+\end{table}
+
+
+
+
+\section{Examples of citations, figures, tables, references}
+\label{sec:others}
+ \cite{kour2014real,kour2014fast} and see \cite{hadash2018estimate}.
+
+The documentation for \verb+natbib+ may be found at
+\begin{center}
+  \url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
+\end{center}
+Of note is the command \verb+\citet+, which produces citations
+appropriate for use in inline text.  For example,
+\begin{verbatim}
+   \citet{hasselmo} investigated\dots
+\end{verbatim}
+produces
+\begin{quote}
+  Hasselmo, et al.\ (1995) investigated\dots
+\end{quote}
+
+\begin{center}
+  \url{https://www.ctan.org/pkg/booktabs}
+\end{center}
+
+
+\subsection{Figures}
+ 
+See Figure \ref{fig:fig1}. Here is how you add footnotes. \footnote{Sample of the first footnote.}
+
+
+\begin{figure}
+  \centering
+  \fbox{\rule[-.5cm]{4cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
+  \caption{Sample figure caption.}
+  \label{fig:fig1}
+\end{figure}
+
+\subsection{Tables}
+
+See awesome Table~\ref{tab:table}.
+
+
+\subsection{Lists}
+\begin{itemize}
+\item Lorem ipsum dolor sit amet
+\item consectetur adipiscing elit. 
+\item Aliquam dignissim blandit est, in dictum tortor gravida eget. In ac rutrum magna.
+\end{itemize}
+
+
+\bibliographystyle{unsrt}  
+%\bibliography{references}  %%% Remove comment to use the external .bib file (using bibtex).
+%%% and comment out the ``thebibliography'' section.
+
+
+%%% Comment out this section when you \bibliography{references} is enabled.
+\begin{thebibliography}{1}
+
+\bibitem{kour2014real}
+George Kour and Raid Saabne.
+\newblock Real-time segmentation of on-line handwritten arabic script.
+\newblock In {\em Frontiers in Handwriting Recognition (ICFHR), 2014 14th
+  International Conference on}, pages 417--422. IEEE, 2014.
+
+
+
+\end{thebibliography}
+
+
+\end{document}
